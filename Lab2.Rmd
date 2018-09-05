@@ -1,0 +1,43 @@
+---
+title: "Lab 2 Typora and Thinking on paper"
+author: "Erika Bueno"
+date: "September 5, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+###How does sublethal heat stress influence phenotypic variation in resistant and susceptible Colorado potato beetle populations?
+
+```mermaid
+
+graph TD
+
+A(<b>Insecticide Resistant Populations)
+B(<b>Susceptible Populations)
+A --> C(Sublethal Temperature: 27 C)
+A --> D(Control Temperature: 21 C)
+B --> E(Sublethal Temperature: 27 C)
+B --> F(Control Temperature: 21 C)
+D--> G(Measure Performance Traits:<br>Weight<br>developmental rate<br>leaf consumption<br>egg clutch size<br>survival)
+C-->G
+E-->H(Measure Performance Traits:<br>Weight<br>developmental rate<br>leaf consumption<br>egg clutch size<br>survival)
+F-->H
+H-->|<b>Response to thermal stress|I(<b>Decrease in survival and poor performance)
+G-->|<b>Response to thermal stress|J(<b>Higher survival rates and greater performance)
+style A fill:#3cbba0,stroke:#333,stroke-width:5px;
+style B fill:#ecc13c,stroke:#333,stroke-width:5px;
+style C fill:#ffffff,stroke:#333,stroke-width:4px;
+style D fill:#bfbfbf,stroke:#333,stroke-width:4px;
+style E fill:#ffffff,stroke:#333,stroke-width:4px;
+style F fill:#bfbfbf,stroke:#333,stroke-width:4px;
+style G fill:#3cbba0,stroke:#333,stroke-width:4px;
+style H fill:#ecc13c,stroke:#333,stroke-width:4px;
+style I fill:#acd0ea,stroke:#333,stroke-width:4px;
+style J fill:#acd0ea,stroke:#333,stroke-width:4px;
+```
+### [Link to my charts](typoralab2.html)
+
+#My flowchart illustrates an experimental design to address the effects of thermal stress between resistant and susceptible beetles.  I hypothesize that resistant CPB populations which have a long history of exposure to pesticides will be more capable of adapting to heat and pesticide stress than beetles from susceptible CPB populations. The data gathered from this experiment will provide a baseline for characterizing differences in levels of adaptability among susceptible and resistant populations while also providing valuable information on the nature of stress responses in CPB.
+#The second image shows three different types of pre graphs that I expect to see after my experiments are completed. The first one is a bar graph or mean adult weight in response to temperature treatments (21 and 27 C) for both susceptible and resistant beetles. The second set of charts are survival curves for both temperature temperature treatments per population type. The last chart is a line graph for developmental rates for resistant beetles over time.
