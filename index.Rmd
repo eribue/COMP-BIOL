@@ -11,3 +11,4 @@ output:
 
 image: ![](http://static.saferbrand.com/media/articles/images/597/sb_us_colorado_potato_bug_44191738.jpg)
 
+[HW2](Lab2.html)
