@@ -37,7 +37,11 @@ style H fill:#ecc13c,stroke:#333,stroke-width:4px;
 style I fill:#acd0ea,stroke:#333,stroke-width:4px;
 style J fill:#acd0ea,stroke:#333,stroke-width:4px;
 ```
-### [Link to my charts](typoralab2.html)
+####[Link to my charts](typoralab2.html)
+flowchart image: ![](flowchartcpb.png)
 
-#My flowchart illustrates an experimental design to address the effects of thermal stress between resistant and susceptible beetles.  I hypothesize that resistant CPB populations which have a long history of exposure to pesticides will be more capable of adapting to heat and pesticide stress than beetles from susceptible CPB populations. The data gathered from this experiment will provide a baseline for characterizing differences in levels of adaptability among susceptible and resistant populations while also providing valuable information on the nature of stress responses in CPB.
-#The second image shows three different types of pre graphs that I expect to see after my experiments are completed. The first one is a bar graph or mean adult weight in response to temperature treatments (21 and 27 C) for both susceptible and resistant beetles. The second set of charts are survival curves for both temperature temperature treatments per population type. The last chart is a line graph for developmental rates for resistant beetles over time.
+### Summary
+
+#### My flowchart illustrates an experimental design to address the effects of thermal stress between resistant and susceptible beetles.  I hypothesize that resistant CPB populations which have a long history of exposure to pesticides will be more capable of adapting to heat and pesticide stress than beetles from susceptible CPB populations. The data gathered from this experiment will provide a baseline for characterizing differences in levels of adaptability among susceptible and resistant populations while also providing valuable information on the nature of stress responses in CPB.
+####The second image shows three different types of pre graphs that I expect to see after my experiments are completed. The first one is a bar graph or mean adult weight in response to temperature treatments (21 and 27 C) for both susceptible and resistant beetles. The second set of charts are survival curves for both temperature temperature treatments per population type. The last chart is a line graph for developmental rates for resistant beetles over time.
+
