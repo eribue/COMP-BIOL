@@ -1,0 +1,101 @@
+---
+title: "Lab3"
+author: "Erika Bueno"
+date: "September 12, 2018"
+output: 
+  beamer_presentation: 
+    colortheme: orchid
+    fonttheme: structurebold
+    theme: Antibes
+---
+
+
+## Table of Contents
+
+\begin{enumerate}[I]
+\item \color{blue} CPB Life History 
+\item Insecticide Resistance
+\item Stress and Epigenetics
+\item Research Questions
+\item Experimental Design Flowchart
+\end{enumerate} 
+
+## CPB Life History
+
+ \begin{picture}(320,250)
+ \put(230,100){\includegraphics[height=2.5cm]{images.jpg}}
+ \put(-30,180){\begin{minipage}[t]{1\linewidth} 
+ {\begin{itemize}
+ \item Complete metamorphisis (Homometabolous) 
+ \item Females can lay up to 400 eggs in one season 
+ \item 4 larval stages known as instars 
+ \item 4th instar larvae burrow into soil where they pupate 
+ \item Adults emerge from soil and find host plants
+ \end{itemize}}
+ \end{minipage}}
+ \end{picture}
+ \end{frame}
+  
+
+
+## Insecticide Resistance
+
+\begin{itemize}
+\item Evolved resistance to over 55 compounds
+\item Resistance reported for both conventional and organic compounds
+\item Mechanisms for resistance
+\end {itemize}
+\begin{enumerate} [I]
+\item Target site mutations 
+\item Increased metabolic excretion rates 
+\end{enumerate}
+
+
+## Stress and Epigenetics 
+
+\begin{picture}(320,250)
+\put(230,200){\includegraphics[height=1.8cm]{methyl.png}}
+\put(30,180){\begin{minipage}[t]{1\linewidth} 
+{Environmental factors such as stress...
+
+\bigskip
+\bigskip
+
+may play an important role in rapid evolution of adaptive traits...
+
+\bigskip
+\bigskip
+
+via epigenetic processes like DNA methylation}
+ \end{minipage}}
+ \end{picture}
+ \end{frame}
+
+
+
+## Research Questions
+
+\begin{picture}(320,250)
+\put(75,40){\includegraphics[height=3cm]{LightningCPB.jpg}}
+ \put(-30,180){\begin{minipage}[t]{1\linewidth} 
+ {\begin{itemize}
+ \item Is the expression of stress response genes are regulated via DNA methylation?
+ \item How does stress affect performance?
+ \item Is there a uniform stress response among different stressor?
+ \end {itemize}}
+ \end{minipage}}
+ \end{picture}
+ \end {frame}
+ 
+  
+## Experimental Design
+
+ \begin{picture}(320,250)
+ \put(100,20){\includegraphics[height=8cm]{cpbstress.png}}
+ \put(0,180){\begin{minipage}[t]{0.4\linewidth}
+ {Testing the effects of temperature and insecticide resistance on performance in CPB}
+ \end{minipage}}
+ \end{picture}
+ 
+
+ 
