@@ -1,7 +1,3 @@
-How does sublethal heat stress influence phenotypic variation in resistant and susceptible Colorado potato beetle populations?
-
-Below is a flowchart of my experimental design to test the effects of sublethal heat stress on CPB performance traits.
-
 ```mermaid
 
 graph TD
@@ -30,6 +26,5 @@ style I fill:#acd0ea,stroke:#333,stroke-width:4px;
 style J fill:#acd0ea,stroke:#333,stroke-width:4px;
 ```
 
-![alt](C:\Users\ebuen\Desktop\BIO381\COMP BIOL\pregraphs.png)
 
-Mock data of performance traits(adult weight, developmental rate, and % survival) under temperature stress treatments (21 C and 27 C) for both resistant and susceptible beetles. 
+
