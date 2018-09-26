@@ -12,3 +12,5 @@ output:
 [HW2](Lab2.html)
 
 [HW3](Lab3.pdf)
+
+[HW4](Lab4.html)

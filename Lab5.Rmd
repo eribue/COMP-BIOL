@@ -1,0 +1,12 @@
+---
+title: "Lab5"
+author: "Erika Bueno"
+date: "September 26, 2018"
+output: html_document
+---
+
+```{r}
+
+
+```
+

@@ -1,0 +1,120 @@
+---
+title: "Lab4"
+author: "Erika Bueno"
+date: "September 19, 2018"
+output: html_document
+---
+```{r}
+# Problem 1
+x<-1.1
+print(x)
+a<-2.2
+print(a)
+b<-3.3
+print(b)
+#a)
+c<-a^b
+print(c)
+x^c #3.61714
+#b)
+(x^a)^b #1.997611
+#c)
+3*x^3+2*x^2+1 #7.413
+
+#Problem 2
+#a)
+first<-seq(1:8)
+second<-seq(1:7)
+secrev<-rev(second)
+rep1<-c(first, secrev)
+print(rep1)
+
+#b)
+myvec<-seq(1:5)
+print(myvec)
+rep(x=myvec, times=myvec)
+
+#c)
+myseq<-(1:5)
+revseq<-rev(myseq)
+print(revseq)
+rep(x=revseq, times=1:5)
+
+#3)
+x<-c(runif(1:10))
+y<-c(runif(1:10))
+polarxy<-sqrt((x^2+y^2))
+print(polarxy)
+thetaxy<-atan(y/x)
+print(thetaxy)
+polarcoords<-c(polarxy,thetaxy)
+print(polarcoords)
+
+#4
+#a)
+queue <- c("sheep", "fox", "owl", "ant")
+snk<-c(queue,"snake")
+print(snk)
+#b)
+sheepgone<-c("sheep")
+snk %in% sheepgone
+nosheep<-snk[! snk %in% sheepgone]
+print(nosheep)
+
+#c)
+donk<-c(nosheep, "donkey")
+print(donk)
+newline<-c("donkey", nosheep)
+print(newline)
+
+#d)
+nosnake<-c("snake")
+newline %in% nosnake
+snkgone<- newline[!newline %in% nosnake]
+print(snkgone)
+
+#e)
+boredowl<-c("owl")
+snkgone %in% boredowl
+owlgone<-snkgone[!snkgone %in% boredowl]
+print(owlgone)
+
+#f
+aphid<- c(owlgone, "aphid")
+print(aphid)
+aphidcuts<- aphid[c(1,2,4,3)]
+print(aphidcuts)
+
+#g)
+aphidpos<-which(aphidcuts == "aphid")
+print(aphidpos)
+
+#5
+newvec<-c(1:100)
+notdiv<-newvec[newvec %%3!=0 & newvec %%2!=0 & newvec %%7!=0]
+print(notdiv)
+
+#6 (answer: \t, replace ,)
+#First String,Second,1.22,3.4
+#Second,More Text,1.555555,2.2220
+#Third,x,3,124
+
+#7
+#find: (\w+), (\w+), (.*)
+#replace: 2/ /1 (/3)
+
+#8
+#find: (\d+) (\w+) (\w+).(\w+)
+#replace:\2 \3_\1.\4
+
+#9
+#find:(\w{1})\w+_(\w+),(\d+)
+#replace:\1_\2,\3
+#find:(\w{1})(\w{5})\w+,(\d+)
+#replace:\1\2,\3
+
+
+
+
+```
+

@@ -2,11 +2,7 @@
 title: "Lab3"
 author: "Erika Bueno"
 date: "September 12, 2018"
-output: 
-  beamer_presentation: 
-    colortheme: orchid
-    fonttheme: structurebold
-    theme: Antibes
+output: beamer_presentation
 ---
 
 
