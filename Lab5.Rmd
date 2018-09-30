@@ -7,6 +7,79 @@ output: html_document
 
 ```{r}
 
+library(dplyr)
+data(iris)
+head(iris)
+tail(iris)
+#1) Five variables, 150 observations 
+str(iris)
+
+#2)Create a new data frame iris1 that contains only the species virginica and versicolor with sepal lengths longer than 6 cm and sepal widths longer than 2.5 cm. How many observations and variables are in the dataset?
+
+iris1<- filter(iris, Species %in% c("virginica","versicolor"), Sepal.Length > 6, Sepal.Width > 2.5)
+str(iris1)
+#56 observations and 5 variables in iris1
+
+#3)Now, create a iris2 data frame from iris1 that contains only the columns for Species, Sepal.Length, and Sepal.Width. How many observations and variables are in the dataset?
+
+iris2<-select(iris1, Sepal.Length, Sepal.Width, Species)
+str(iris2)
+#56 observations and 3 variables
+
+#4)Create an iris3 data frame from iris2 that orders the observations from largest to smallest sepal length. Show the first 6 rows of this dataset.
+
+iris3<-arrange(iris2, desc(Sepal.Length))
+head(iris3)
+#Sepal.Length Sepal.Width   Species
+#1          7.9         3.8 virginica
+#2          7.7         3.8 virginica
+#3          7.7         2.6 virginica
+#4          7.7         2.8 virginica
+#5          7.7         3.0 virginica
+#6          7.6         3.0 virginica
+
+#5)Create an iris4 data frame from iris3 that creates a column with a sepal area (length * width) value for each observation. How many observations and variables are in the dataset?
+
+iris4<-mutate(iris3, Sepal.Area= Sepal.Width*Sepal.Length)
+str(iris4)
+head(iris4)
+#56 observations with 4 variables
+
+
+#6) Create iris5 that calculates the average sepal length, the average sepal width, and the sample size of the entire iris4 data frame and print iris5.
+
+iris5<-mutate(iris4, meanSepalLength= mean(Sepal.Length), meanSepalWidth= mean(Sepal.Width), Totalnumber=n())
+print(iris5)
+
+#7)Finally, create iris6 that calculates the average sepal length, the average sepal width, and the sample size for each species of in the iris4 data frame and print iris6.
+iris6<- summarize(group_by(iris4, Species),
+                  meanSepalLength = mean(Sepal.Length),
+                  meanSepalWidth = mean(Sepal.Width),
+                  Toalnumber = n())
+print(iris6)
+
+# Species    meanSepalLength meanSepalWidth Totalnumber
+ # <fct>                <dbl>          <dbl>       <int>
+#versicolor            6.48           2.99          17
+# virginica             6.79           3.06          39
+
+#8)
+
+iris7<-iris %>%
+  filter(Species != "setosa", Sepal.Length > 6.0, Sepal.Width > 2.5) %>%
+  select(c(Species, Sepal.Length, Sepal.Width)) %>%
+  arrange(Sepal.Length) %>%
+  mutate(Sepal.Area = Sepal.Length * Sepal.Width) %>%
+  group_by(Species) %>%
+  summarize(meanSepalLength = mean(Sepal.Length),
+                  meanSepalWidth = mean(Sepal.Width),
+                  Totalnumber = n())
+  print(iris7)
 
 ```
+
+
+
+
+
 
