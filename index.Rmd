@@ -17,3 +17,8 @@ output:
 
 [HW5](Lab5.html)
 
+[HW6](Lab6.html)
+
+[HW7](Lab7.html)
+
+

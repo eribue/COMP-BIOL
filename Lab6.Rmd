@@ -1,0 +1,176 @@
+---
+title: "Lab6"
+author: "Erika Bueno"
+date: "October 3, 2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+library(dplyr)
+data(iris)
+print(iris)
+library(tidyverse)
+
+longiris<-iris %>% 
+  gather(Sepal.Length:Petal.Width, key="Trait", value="Measurement")
+
+print(longiris)
+
+longiris<-iris %>% 
+  gather(Sepal.Length:Petal.Width, key="Trait", value="Measurement") %>%
+  group_by(Species, Trait) %>%
+  summarize(Mean= mean(Measurement))
+
+head(longiris)
+print(longiris)
+
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+
+# quick and dirty, a truncated normal distribution to work on the solution set
+
+z <- rnorm(n=3000,mean=0.2) #creating a data frame, 3000 obs, and mean of .2
+z <- data.frame(1:3000,z) 
+names(z) <- list("ID","myVar") #providing column names
+z <- z[z$myVar>0,] #calling variables greater than zero
+str(z)
+summary(z$myVar) #provides quartiles, mean, median and max value
+
+p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +  #plots the distribution of the dataset
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2)  #aesthetics 
+print(p1)
+
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75) #adding a dotted line around the distribution
+print(p1)
+
+normPars <- fitdistr(z$myVar,"normal")#fit a normal distribution to dataset z
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute
+
+meanML <- normPars$estimate["mean"] #calculating mean assuming normality
+sdML <- normPars$estimate["sd"] #calculating sd assuming normality
+
+xval <- seq(0,max(z$myVar),len=length(z$myVar))#creating values of x from our data
+
+
+stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$myVar), args = list(mean = meanML, sd = sdML)) #statfunction is used to superimpose a function on top of a plot, using dnorm prob density function
+p1 + stat #visualzing the distribution over the data
+
+ expoPars <- fitdistr(z$myVar,"exponential") #fitting an exponential distribution to z, fitdistr= maximum likelihood 
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$myVar), args = list(rate=rateML))
+ p1 + stat + stat2 #superimposing a exponential curve onto data z
+ 
+ stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$myVar), args = list(min=min(z$myVar), max=max(z$myVar))) #superimposing a uniform distribution to z
+ p1 + stat + stat2 + stat3 #visualizing them alltogether 
+ 
+ gammaPars <- fitdistr(z$myVar,"gamma") #creating a gamma distribution
+shapeML <- gammaPars$estimate["shape"] 
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$myVar), args = list(shape=shapeML, rate=rateML)) #superimposing a gamma distribution to z
+ p1 + stat + stat2 + stat3 + stat4 #compiling all distributions on p1
+ 
+ pSpecial <- ggplot(data=z, aes(x=myVar/(max(myVar + 0.1)), y=..density..)) + #creating a new plot, x is now a ratio, y is still a #density 
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$myVar/max(z$myVar + 0.1),start=list(shape1=1,shape2=2),"beta") #fitting a beta distribution onto z
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$myVar), args = list(shape1=shape1ML,shape2=shape2ML)) #superimposing beta distribution onto the pspecial plot, fits the #data very well
+pSpecial + statSpecial
+
+mydata <- read.table("MyDataFile.csv",header=TRUE,sep=",", stringsAsFactors=FALSE) #reading in my data file
+str(mydata)
+summary(mydata)
+head(mydata)
+summary(mydata)
+
+
+p1 <- ggplot(data=mydata, aes(x=LeafArea, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(p1)
+
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1)
+leafarea<-mydata$LeafArea
+normPars <- fitdistr(leafarea,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute
+
+
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(leafarea),len=length(leafarea))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(leafarea), args = list(mean = meanML, sd = sdML)) #distribution does not approximate normal distribution
+ p1 + stat
+ 
+ 
+expoPars <- fitdistr(leafarea,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(leafarea), args = list(rate=rateML)) #also #doesnt approximate an exponential dist
+ p1 + stat + stat2
+ 
+ stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(leafarea), args = list(min=min(leafarea), max=max(mydata$LeafArea)))
+ p1 + stat + stat2 + stat3 #mydata approximates a uniform distribution
+ 
+ gammaPars <- fitdistr(leafarea,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(leafarea), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4 #doesnt approximate a gamma dist
+ 
+ pSpecial <- ggplot(data=mydata, aes(x=leafarea/(max(leafarea + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=leafarea/max(leafarea + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(leafarea), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+
+
+#5)
+#Using the best-fitting distribution, go back to the code and get the maximum likelihood parameters. Use those to simulate a new #data #set, with the same length as your original vector, and plot that in a histogram and add the probability density curve. #Right below #that, generate a fresh histogram plot of the original data, and also include the probability density curve.
+
+normPars <- fitdistr(leafarea,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute
+meanML <- normPars$estimate["mean"]
+meanML
+sdML <- normPars$estimate["sd"]
+sd
+
+newdist <- rnorm(n=200, mean= 1.47, sd=0.39)
+length(newdist)
+str(newdist)
+head(newdist)
+
+p2<-qplot(x=newdist, color=I("black"), fill=I("goldenrod"))+  geom_density(linetype="dotted",size=0.75)
+p2
+stat5 <- stat_function(aes(x = newdist, y = ..y..), fun = dnorm, colour="red", n = length(1:200), args = list(mean = meanML, sd = sdML)) 
+p2 + stat5
+
+#histogram of original my dataset
+stat <- stat_function(aes(x = xval, y =..y..), fun = dnorm, colour="red", n = length(leafarea), args = list(mean = meanML, sd = sdML)) #distribution does not approximate normal distribution
+ 
+p1 + stat
+
+```
+

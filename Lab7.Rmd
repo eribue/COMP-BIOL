@@ -1,0 +1,220 @@
+---
+title: "Lab7"
+author: "Erika Bueno"
+date: "October 10, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+(library(tidyverse))
+#1)
+#Insecticide stress response in CPB
+#Treatmentns: Control, 1ppm, 0.5ppm, 0.05ppm
+#Response: Leaf area consumed (cm^2) and  rigthting response time (secs)
+
+#H0: No difference in leaf are consumed between control and insecticide exposed beetles
+#HA:Beetles exposed to imidacloprid consume less than the control beetles
+
+```
+
+
+```{r}
+#2) Assuming my data is randomly distributed
+    #n=30 per treatment group; total 120 
+    #LeafArea Means:Control: 20.5, 1ppm mean: 13.2, 0.5 ppm: 15.4, 0.05 ppm: 17.3
+    #Leaf area var: Control: 1.4, 1ppm: 1.9, 0.5ppm: 1.2, 0.05 ppm: 1.3 
+
+```
+
+
+```{r}
+#3) Response var: Leaf Area consumed
+ngroup<- 4
+nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
+nsize<- c(30,30,30,30)  #30 larvae per group
+nMean<-c(20.5, 13.2, 15.4, 17.3) #fake means
+nSD<-c(1.4, 1.9, 1.2, 1.3) #fake sd
+ID<-1:(sum(nsize)) #creates a row with all number of obs
+##create fake random distrubutions for each treatment groups
+responsevar<- c(rnorm(n=nsize[1], mean= nMean[1], sd=nSD[1]), #for control group
+       rnorm(n=nsize[2], mean= nMean[2], sd=nSD[2]), #for 1ppm group
+       rnorm(n=nsize[3], mean= nMean[3], sd=nSD[3]), #for 0.5ppm group
+       rnorm(n=nsize[4], mean=nMean[4], sd=nSD[4])) #for 0.05ppm group
+Tgroup<- rep(nName, nsize)  
+Tgroup
+table(Tgroup)
+
+ANOdata<- data.frame(ID,Tgroup,responsevar) #building data frame for ANOVA analysis
+str(ANOdata)
+head(ANOdata)
+```
+
+```{r}
+#4)
+#Anova model
+ANOmodel<- aov(responsevar~Tgroup) #running the model
+print(ANOmodel)
+Anovasummary<-summary(ANOmodel)
+Anovasummary
+#  Df Sum Sq Mean Sq F value Pr(>F)    
+#Tgroup        3  714.8  238.27   97.39 <2e-16 *** #significant difference found among treatments
+#Residuals   116  283.8    2.45                   
+
+#plotting the ANOVA model
+ANOplot<- ggplot(data= ANOdata,
+                 aes(x=Tgroup, y=responsevar, 
+                     fill= Tgroup)) + geom_boxplot() # graph shows a dose dependent response; with increasing imidacloprid concentrations larvae eat less
+print(ANOplot)
+```
+
+```{r}
+#5) #after running my model 3 times, I still find significant response among treatments
+
+responsevar<- c(rnorm(n=nsize[1], mean= nMean[1], sd=nSD[1]), #for control group
+       rnorm(n=nsize[2], mean= nMean[2], sd=nSD[2]), #for 1ppm group
+       rnorm(n=nsize[3], mean= nMean[3], sd=nSD[3]), #for 0.5ppm group
+       rnorm(n=nsize[4], mean=nMean[4], sd=nSD[4])) #for 0.05ppm group
+
+ANOmodel<- aov(responsevar~Tgroup) #running the model
+print(ANOmodel)
+Anovasummary<-summary(ANOmodel)
+Anovasummary
+    #Df Sum Sq Mean Sq F value Pr(>F)    
+#Tgroup        3  853.7  284.56   134.7 <2e-16 ***
+#Residuals   116  245.0    2.11 
+responsevar<- c(rnorm(n=nsize[1], mean= nMean[1], sd=nSD[1]), #for control group
+       rnorm(n=nsize[2], mean= nMean[2], sd=nSD[2]), #for 1ppm group
+       rnorm(n=nsize[3], mean= nMean[3], sd=nSD[3]), #for 0.5ppm group
+       rnorm(n=nsize[4], mean=nMean[4], sd=nSD[4])) #for 0.05ppm group
+
+ANOmodel<- aov(responsevar~Tgroup) #running the model
+print(ANOmodel)
+Anovasummary<-summary(ANOmodel)
+Anovasummary
+#Df Sum Sq Mean Sq F value Pr(>F)    
+#Tgroup        3  987.5   329.2   167.1 <2e-16 ***
+#Residuals   116  228.5     2.0      
+```
+
+```{r}
+#6)#Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the effect size) for you to still detect a significant pattern (p < 0.05)?
+
+ngroup<- 4
+nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
+nsize<- c(30,30,30,30)  #30 larvae per group
+nMean<-c(20.5, 22.5, 22.5, 22.5) #different means
+nSD<-c(1.4, 1.9, 1.2, 1.3) #fake sd
+ID<-1:(sum(nsize)) #creates a row with all number of obs
+##create fake random distrubutions for each treatment groups
+responsevar<- c(rnorm(n=nsize[1], mean= nMean[1], sd=nSD[1]), #for control group
+       rnorm(n=nsize[2], mean= nMean[2], sd=nSD[2]), #for 1ppm group
+       rnorm(n=nsize[3], mean= nMean[3], sd=nSD[3]), #for 0.5ppm group
+       rnorm(n=nsize[4], mean=nMean[4], sd=nSD[4])) #for 0.05ppm group
+Tgroup<- rep(nName, nsize)  
+Tgroup
+table(Tgroup)
+
+ANOdata<- data.frame(ID,Tgroup,responsevar) #building data frame for ANOVA analysis
+str(ANOdata)
+head(ANOdata)
+
+#Anova model
+ANOmodel<- aov(responsevar~Tgroup) #running the model
+print(ANOmodel)
+Anovasummary<-summary(ANOmodel)
+Anovasummary
+#             Df Sum Sq Mean Sq F value Pr(>F) #no longer significant when means differ by 0.3, >0.05
+#Tgroup        3   10.1   3.368   1.438  0.235
+#Residuals   116  271.6   2.341         
+
+#             Df Sum Sq Mean Sq F value Pr(>F)  #means differ here by 0.6 and are showing slight significance <0.05
+#Tgroup        3  21.53   7.175    3.14 0.0281 *
+#Residuals   116 265.10   2.285 
+
+#        Df Sum Sq Mean Sq F value Pr(>F) #trying it again with a differenve of 0.6 gives a p>0.05
+#Tgroup        3   8.41   2.804   1.228  0.303
+#Residuals   116 264.96   2.284 
+
+# Df Sum Sq Mean Sq F value Pr(>F)
+#Tgroup        3  13.53   4.510   1.937  0.128 #means differ by 1 and no longer have a p<0.05
+#Residuals   116 270.14   2.329   
+
+# Df Sum Sq Mean Sq F value   Pr(>F)    
+#Tgroup        3  116.5   38.82   20.34 1.17e-10 *** #means differ by 2 and now have a p<0.05
+#Residuals   116  221.5    1.91  
+```
+
+```{}
+#7)Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order #to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a #feeling for the effect of random variation in the data.
+
+ngroup<- 4
+nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
+nsize<- c(3,3,3,3)  #30 larvae per group, tried n=20,15,10,8,6,4,3. with a n=2 I saw non-significant p-values
+nMean<-c(20.5, 13.2, 15.4, 17.3) #different means
+nSD<-c(1.4, 1.9, 1.2, 1.3) #fake sd
+ID<-1:(sum(nsize)) #creates a row with all number of obs
+##create fake random distrubutions for each treatment groups
+responsevar<- c(rnorm(n=nsize[1], mean= nMean[1], sd=nSD[1]), #for control group
+       rnorm(n=nsize[2], mean= nMean[2], sd=nSD[2]), #for 1ppm group
+       rnorm(n=nsize[3], mean= nMean[3], sd=nSD[3]), #for 0.5ppm group
+       rnorm(n=nsize[4], mean=nMean[4], sd=nSD[4])) #for 0.05ppm group
+Tgroup<- rep(nName, nsize)  
+Tgroup
+table(Tgroup)
+
+ANOdata<- data.frame(ID,Tgroup,responsevar) #building data frame for ANOVA analysis
+str(ANOdata)
+head(ANOdata)
+
+#Anova model
+ANOmodel<- aov(responsevar~Tgroup) #running the model
+print(ANOmodel)
+Anovasummary<-summary(ANOmodel)
+Anovasummary
+```
+
+
+```{r}
+#8)
+
+
+
+
+
+
+
+
+```
+
+```{r}
+#9)
+ngroup<- 4
+nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
+nsize<- c(30,30,30,30)  #30 larvae per group, tried n=20,15,10,8,6,4,3. with a n=2 I saw non-significant p-values
+nMean<-c(20.5, 13.2, 15.4, 17.3) #different means
+nSD<-c(1.4, 1.9, 1.2, 1.3) #fake sd
+ID<-1:(sum(nsize)) #creates a row with all number of obs
+##create fake gamma distrubutions for each treatment groups
+responsevargamma<- c(rgamma(n=nsize[1], shape= nMean[1], scale=nSD[1]), #for control group
+       rgamma(n=nsize[2], shape= nMean[2], scale=nSD[2]), #for 1ppm group
+       rgamma(n=nsize[3], shape= nMean[3], scale=nSD[3]), #for 0.5ppm group
+       rgamma(n=nsize[4], shape=nMean[4], scale=nSD[4])) #for 0.05ppm group
+Tgroup<- rep(nName, nsize)  
+Tgroup
+table(Tgroup)
+ANOdatagamma<- data.frame(ID,Tgroup,responsevargamma) #building data frame for ANOVA analysis
+str(ANOdatagamma)
+head(ANOdatagamma)
+
+#Anova model using a gamma dist
+ANOmodelgamma<- aov(responsevargamma~Tgroup) #running the model
+print(ANOmodelgamma)
+Anovasummary_gamma<-summary(ANOmodelgamma)
+Anovasummary
+#plotting the ANOVA model
+ANOplot_gamma<- ggplot(data= ANOdatagamma,
+                 aes(x=Tgroup, y=responsevargamma, 
+                     fill= Tgroup)) + geom_boxplot() # graph shows a dose dependent response; with increasing imidacloprid concentrations larvae eat less
+print(ANOplot_gamma)
+
+```
