@@ -7,7 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 (library(tidyverse))
-#1)
+##1)
 #Insecticide stress response in CPB
 #Treatmentns: Control, 1ppm, 0.5ppm, 0.05ppm
 #Response: Leaf area consumed (cm^2) and  rigthting response time (secs)
@@ -19,7 +19,7 @@ output: html_document
 
 
 ```{r}
-#2) Assuming my data is randomly distributed
+##2) Assuming my data is randomly distributed
     #n=30 per treatment group; total 120 
     #LeafArea Means:Control: 20.5, 1ppm mean: 13.2, 0.5 ppm: 15.4, 0.05 ppm: 17.3
     #Leaf area var: Control: 1.4, 1ppm: 1.9, 0.5ppm: 1.2, 0.05 ppm: 1.3 
@@ -28,7 +28,7 @@ output: html_document
 
 
 ```{r}
-#3) Response var: Leaf Area consumed
+##3) Response var: Leaf Area consumed
 ngroup<- 4
 nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
 nsize<- c(30,30,30,30)  #30 larvae per group
@@ -50,8 +50,8 @@ head(ANOdata)
 ```
 
 ```{r}
-#4)
-#Anova model
+##4)
+##Anova model
 ANOmodel<- aov(responsevar~Tgroup) #running the model
 print(ANOmodel)
 Anovasummary<-summary(ANOmodel)
@@ -60,7 +60,7 @@ Anovasummary
 #Tgroup        3  714.8  238.27   97.39 <2e-16 *** #significant difference found among treatments
 #Residuals   116  283.8    2.45                   
 
-#plotting the ANOVA model
+##plotting the ANOVA model
 ANOplot<- ggplot(data= ANOdata,
                  aes(x=Tgroup, y=responsevar, 
                      fill= Tgroup)) + geom_boxplot() # graph shows a dose dependent response; with increasing imidacloprid concentrations larvae eat less
@@ -68,7 +68,7 @@ print(ANOplot)
 ```
 
 ```{r}
-#5) #after running my model 3 times, I still find significant response among treatments
+##5) #after running my model 3 times, I still find significant response among treatments
 
 responsevar<- c(rnorm(n=nsize[1], mean= nMean[1], sd=nSD[1]), #for control group
        rnorm(n=nsize[2], mean= nMean[2], sd=nSD[2]), #for 1ppm group
@@ -97,7 +97,7 @@ Anovasummary
 ```
 
 ```{r}
-#6)#Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the effect size) for you to still detect a significant pattern (p < 0.05)?
+##6)#Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the effect size) for you to still detect a significant pattern (p < 0.05)?
 
 ngroup<- 4
 nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
@@ -118,7 +118,7 @@ ANOdata<- data.frame(ID,Tgroup,responsevar) #building data frame for ANOVA analy
 str(ANOdata)
 head(ANOdata)
 
-#Anova model
+##Anova model
 ANOmodel<- aov(responsevar~Tgroup) #running the model
 print(ANOmodel)
 Anovasummary<-summary(ANOmodel)
@@ -144,8 +144,8 @@ Anovasummary
 #Residuals   116  221.5    1.91  
 ```
 
-```{}
-#7)Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order #to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a #feeling for the effect of random variation in the data.
+```{r}
+##7)Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order #to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a #feeling for the effect of random variation in the data.
 
 ngroup<- 4
 nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
@@ -175,7 +175,14 @@ Anovasummary
 
 
 ```{r}
-#8)
+##8)Write up your results in a markdown file, organized with headers and different code #chunks to show your analysis. Be #explicit in your explanation and justification for #sample sizes, means, and variances.
+
+#After repeatedly running the ANOVA model based on my "fake" data (means and sds), I got back significant p values <0.05 each time. This suggests that my chosen means and variance parameters were particularly robust enough to produce signficant differnce among my treatment groups.
+
+#When I adjusted the means of my different treatment groups, the smallest difference between my groups that still provided a significant difference was 2.
+
+#The minimum sample size I would beed to detect a p<0.05 among groups was 3.
+
 
 
 
@@ -187,7 +194,7 @@ Anovasummary
 ```
 
 ```{r}
-#9)
+##9)
 ngroup<- 4
 nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
 nsize<- c(30,30,30,30)  #30 larvae per group, tried n=20,15,10,8,6,4,3. with a n=2 I saw non-significant p-values
