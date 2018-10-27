@@ -1,0 +1,312 @@
+---
+title: "Lab8"
+author: "Erika Bueno"
+date: "October 17, 2018"
+output: html_document
+---
+
+```{r}
+
+#Preliminaries
+library(ggplot2)
+library(tidyverse)
+
+#Global variables
+ngroup<- 4
+nName<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
+nsize<- c(30,30,30,30)  #30 larvae per group
+nMean<-c(20.5, 13.2, 15.4, 17.3) #fake means
+nSD<-c(1.4, 1.9, 1.2, 1.3) #fake sd
+ID<-1:(sum(nsize)) #creates a row with all number of obs
+Tgroup<- rep(nName, nsize)
+
+#Function output
+#createData()
+#CalculateStuff()
+#SummarizeOutput()
+#GraphResults()
+
+#############################################################################################################################
+#FUNCTION:Create data
+#INPUTS: creating a fake set of data based on my chosen means and sd values from a random distribution
+#OUTPUTS: Data frame with values that equal my chosen means and sds
+createData<- function(filename=NULL){
+      if(is.null(filename)){
+      Data<-c(rnorm(n=nsize[1], mean= nMean[1], sd=nSD[1]), #for control group
+       rnorm(n=nsize[2], mean= nMean[2], sd=nSD[2]), #for 1ppm group
+       rnorm(n=nsize[3], mean= nMean[3], sd=nSD[3]), #for 0.5ppm group
+       rnorm(n=nsize[4], mean=nMean[4], sd=nSD[4]))
+      return(Data)
+       }else{
+       DataTable<-read.table(file=filename,
+                          header=TRUE,
+                          sep=",",
+                          stringsAsFactors = FALSE)
+       return(DataTable)
+       }
+  }
+createData()
+fakeData<-createData()
+print(fakeData)
+#-----------------------------------------------------------------------------------------------------------------------------
+#############################################################################################################################
+#FUNCTION: Analysis of variance, ANOdata 
+#INPUTS: fakeData 
+#OUTPUTS: ANOVA analysis
+
+#-----------------------------------------------------------------------------------------------------------------------------
+MakeANOVAtable<- function(filename=NULL) {
+  ANOtable<-data.frame(ID,Tgroup,fakeData)
+  return(ANOtable)}
+
+MakeANOVAtable()
+table<-MakeANOVAtable()
+table
+
+calculateANOVA<-function(filename=NULL) {
+  if(is.null(filename)){
+  ANOmodel<- aov(fakeData~Tgroup)
+  return(print(ANOmodel))}}
+  
+calculateANOVA()
+  ANOmodel<-calculateANOVA()
+
+#---------------------------------------------------------------------------------------------------------------------------
+#############################################################################################################################
+#FUNCTION: Summarize output from ANOVA model
+#INPUTS:Anova model; calculateANOVA()
+#OUTPUTS: p-values
+
+#-----------------------------------------------------------------------------------------------------------------------------
+anovaSummary<- function(filename=NULL){
+  summaryANO<-summary(ANOmodel)
+  return(summaryANO)
+}
+anovaSummary()
+results<-anovaSummary()
+
+#----------------------------------------------------------------------------------------------------------------------------
+#############################################################################################################################
+#FUNCTION:Graph results
+#INPUTS:dataset and x and y variables
+#OUTPUTS:box plot of treatment means
+
+#----------------------------------------------------------------------------------------------------------------------------
+ANOplot<- function(filename=NULL){
+  resultBoxplot<-ggplot(data=table,
+                 aes(x=Tgroup, y=fakeData, 
+                     fill= Tgroup)) + geom_boxplot()
+  return(resultBoxplot)
+}
+
+ANOplot()
+
+#----------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the effect size) for you to still detect a significant pattern (p < 0.05).
+
+#Global variables
+ngroup2<- 4
+nName2<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
+nsize2<- c(30,30,30,30)  #30 larvae per group
+nMean2<-c(20.5, 22.5, 22.5, 22.5) #different means
+nSD2<-c(1.4, 1.9, 1.2, 1.3) #fake sd
+ID2<-1:(sum(nsize)) #creates a row with all number of obs
+Tgroup2<- rep(nName2, nsize2)
+
+
+#FUNCTION:Create data
+#INPUTS: creating a fake set of data based on my chosen means and sd values from a random distribution
+#OUTPUTS: Data frame with values that equal my chosen means and sds
+createData2<- function(filename=NULL){
+      if(is.null(filename)){
+      Data2<-c(rnorm(n=nsize2[1], mean= nMean2[1], sd=nSD2[1]), #for control group
+       rnorm(n=nsize2[2], mean= nMean2[2], sd=nSD2[2]), #for 1ppm group
+       rnorm(n=nsize2[3], mean= nMean2[3], sd=nSD2[3]), #for 0.5ppm group
+       rnorm(n=nsize2[4], mean=nMean2[4], sd=nSD2[4]))
+      return(Data2)
+       }else{
+       DataTable2<-read.table(file=filename,
+                          header=TRUE,
+                          sep=",",
+                          stringsAsFactors = FALSE)
+       return(DataTable2)
+       }
+  }
+createData2()
+fakeData2<-createData2()
+print(fakeData2)
+#-----------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#FUNCTION: Analysis of variance, ANOdata 
+#INPUTS: fakeData 
+#OUTPUTS: ANOVA analysis
+
+#-----------------------------------------------------------------------------------------------------------------------------
+MakeANOVAtable2<- function(filename=NULL) {  
+  ANOtable2<-data.frame(ID2,Tgroup2,fakeData2)
+  return(ANOtable2)}
+
+MakeANOVAtable2()
+table2<-MakeANOVAtable2()
+table2
+
+calculateANOVA2<-function(filename=NULL) {
+  if(is.null(filename)){
+  ANOmodel2<- aov(fakeData2~Tgroup2)
+  return(print(ANOmodel2))}}
+  
+calculateANOVA2()
+  ANOmodel2<-calculateANOVA2()
+
+
+#---------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#FUNCTION: Summarize output from ANOVA model
+#INPUTS:Anova model; calculateANOVA()
+#OUTPUTS: p-values
+
+#---------------------------------------------------------------------------------------------------------------------------
+anovaSummary2<- function(filename=NULL){
+  summaryANO2<-summary(ANOmodel2)
+  return(summaryANO2)
+}
+anovaSummary2()
+results2<-anovaSummary2()
+
+#----------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#FUNCTION:Graph results
+#INPUTS:dataset and x and y variables
+#OUTPUTS:box plot of treatment means
+
+#---------------------------------------------------------------------------------------------------------------------------
+ANOplot2<- function(filename=NULL){
+  resultBoxplot2<-ggplot(data=table2,
+                 aes(x=Tgroup2, y=fakeData2, 
+                     fill= Tgroup2)) + geom_boxplot()
+  return(resultBoxplot2)
+}
+
+ANOplot2()
+
+#---------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order #to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a #feeling for the effect of random variation in the data.
+
+#Global variables
+ngroup3<- 4
+nName3<-c("Control", "1ppm", "0.5ppm", "0.05ppm")
+nsize3<- c(3,3,3,3)  #3 larvae per group
+nMean3<-c(20.5, 13.2, 15.4, 17.3) #fake means
+nSD3<-c(1.4, 1.9, 1.2, 1.3) #fake sd
+ID3<-1:(sum(nsize)) #creates a row with all number of obs
+Tgroup3<- rep(nName3, nsize3)
+
+
+#FUNCTION:Create data
+#INPUTS: creating a fake set of data based on my chosen means and sd values from a random distribution
+#OUTPUTS: Data frame with values that equal my chosen means and sds
+createData3<- function(filename=NULL){
+      if(is.null(filename)){
+      Data3<-c(rnorm(n=nsize3[1], mean= nMean3[1], sd=nSD3[1]), #for control group
+       rnorm(n=nsize3[2], mean= nMean3[2], sd=nSD3[2]), #for 1ppm group
+       rnorm(n=nsize3[3], mean= nMean3[3], sd=nSD3[3]), #for 0.5ppm group
+       rnorm(n=nsize3[4], mean=nMean3[4], sd=nSD3[4]))
+      return(Data3)
+       }else{
+       DataTable3<-read.table(file=filename,
+                          header=TRUE,
+                          sep=",",
+                          stringsAsFactors = FALSE)
+       return(DataTable3)
+       }
+  }
+createData3()
+fakeData3<-createData3()
+print(fakeData3)
+#---------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#FUNCTION: Analysis of variance, ANOdata 
+#INPUTS: fakeData 
+#OUTPUTS: ANOVA analysis
+
+#---------------------------------------------------------------------------------------------------------------------------
+MakeANOVAtable3<- function(filename=NULL) {
+  ANOtable3<-data.frame(ID3,Tgroup3,fakeData3)
+  return(ANOtable3)}
+
+MakeANOVAtable3()
+table3<-MakeANOVAtable3()
+table3
+
+calculateANOVA3<-function(filename=NULL) {
+  if(is.null(filename)){
+  ANOmodel3<- aov(fakeData3~Tgroup3)
+  return(print(ANOmodel3))}}
+  
+calculateANOVA3()
+  ANOmodel3<-calculateANOVA3()
+
+
+#---------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#FUNCTION: Summarize output from ANOVA model
+#INPUTS:Anova model; calculateANOVA()
+#OUTPUTS: p-values
+
+#---------------------------------------------------------------------------------------------------------------------------
+anovaSummary3<- function(filename=NULL){
+  summaryANO3<-summary(ANOmodel3)
+  return(summaryANO3)
+}
+anovaSummary3()
+results3<-anovaSummary3()
+
+#---------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#FUNCTION:Graph results
+#INPUTS:dataset and x and y variables
+#OUTPUTS:box plot of treatment means
+
+#----------------------------------------------------------------------------------------------------------------------------
+ANOplot3<- function(filename=NULL){
+  resultBoxplot3<-ggplot(data=table3,
+                 aes(x=Tgroup3, y=fakeData3, 
+                     fill= Tgroup3)) + geom_boxplot()
+  return(resultBoxplot3)
+}
+
+ANOplot3()
+
+#---------------------------------------------------------------------------------------------------------------------------
+############################################################################################################################
+#FUNCTION:Get residuals from ANOVA analysis
+#INPUTS: Anova table
+#OUTPUTS: list of residuals
+
+#---------------------------------------------------------------------------------------------------------------------------
+MakeANOVAtable<- function(filename=NULL) {
+  Tgroup3<- rep(nName3, nsize3)
+  return(Tgroup3)
+  ANOtable3<-data.frame(ID3,Tgroup3,fakeData3)
+  return(ANOtable3)}
+
+MakeANOVAtable3()
+table3<-MakeANOVAtable3()
+table3
+
+calculateANOVA3Residuals<-function(filename=NULL) {
+  if(is.null(filename)){
+  ANOmodel3<- aov(fakeData3~Tgroup3)
+  return(print(ANOmodel3$residuals))}}
+  
+calculateANOVA3Residuals()
+  ANOmodel3<-calculateANOVA3Residuals()
+
+
+#---------------------------------------------------------------------------------------------------------------------------
+
+
+```
+

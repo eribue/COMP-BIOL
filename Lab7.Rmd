@@ -41,7 +41,6 @@ responsevar<- c(rnorm(n=nsize[1], mean= nMean[1], sd=nSD[1]), #for control group
        rnorm(n=nsize[3], mean= nMean[3], sd=nSD[3]), #for 0.5ppm group
        rnorm(n=nsize[4], mean=nMean[4], sd=nSD[4])) #for 0.05ppm group
 Tgroup<- rep(nName, nsize)  
-Tgroup
 table(Tgroup)
 
 ANOdata<- data.frame(ID,Tgroup,responsevar) #building data frame for ANOVA analysis
