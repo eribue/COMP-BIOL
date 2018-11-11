@@ -95,7 +95,7 @@ print(m5) #not what i was hoping for
 set.seed(200)
 d2<- d[sample(1:nrow(d), 110),] #sampling all rows of data set for 110 values without replacementsamp
 head(d2)
-d2
+
 
 m6<-ggplot(data=d2, aes(x=Species, fill=Species)) + geom_bar() + labs(title="Barplot of Sepal Width",
        y="Count") + ylim(0,50)
