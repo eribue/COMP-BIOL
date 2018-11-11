@@ -1,0 +1,135 @@
+---
+title: "Lab11"
+author: "Erika Bueno"
+date: "November 7, 2018"
+output: html_document
+---
+
+```{r}
+devtools::install_github("thomasp85/patchwork")
+#install.packages("colorspace")
+library(colorspace)
+library(devtools)
+library(patchwork)
+library(wesanderson)
+
+library(ggplot2)
+p1 <- qplot(mtcars$mpg, mtcars$disp)
+p2 <- qplot(mtcars$mpg, mtcars$wt)
+p1 + p2 # patchwork Works!
+
+
+#other packages did not install
+library(cowplot)
+library(ggthemes)
+
+
+
+
+############################################################################
+beetles<- read.csv("CPBWeights.csv") #basic boxplot using my own data
+
+
+p <- ggplot(beetles, aes(x=Treatment, y=FinalWeight)) + 
+  geom_boxplot()
+p
+
+
+p <- ggplot(beetles, aes(x=Treatment, y=FinalWeight)) +  #adding titles
+  geom_boxplot() +
+  labs(title="Beetle Weights (mg)",
+       subtitle = "Final weights of beetles according to treatment group",
+       x="Treatment",
+       y="Mass (mg)")
+p
+
+
+p <- ggplot(beetles,mapping =  aes(x=Treatment, y=FinalWeight)) + 
+  geom_boxplot() +
+  labs(title="Beetle Weights (mg)",
+       subtitle = "Final weights of beetles according to treatment group",
+       x="Treatment",
+       y="Mass (mg)")
+
+p+ theme_gray(base_size = 20, base_family = "sans") #changing the fond and theme and filling each treatment by color
+
+p + coord_flip() +stat_summary(fun.y=mean, geom="point", shape=5, size=4)  #flipping x and y coordinates for better readability
+library(wesanderson) #list of palletes from wes anderson movies
+
+p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("IsleofDogs1", 6, type="continuous")) + coord_flip()
+p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("Chevalier1", 6, type="continuous")) + coord_flip() +stat_summary(fun.y=mean, geom="point", shape=5, size=4) 
+p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("Cavalcanti1", 6, type="continuous"))
+
+######################################################################################################
+#ggplots using built in dataset iris
+d<-iris
+head(iris)
+str(iris)
+dim(iris)
+#scatter plots using iris data set
+m1<- ggplot(data=d, mapping = aes(x=Sepal.Length, y=Sepal.Width, color=Species, shape=Species)) + geom_point(size=3)
+print(m1)
+m1 + labs(title="Scatter plot of Sepal Length vs Sepal Width for three species of Iris",
+       x="Sepal Length (cm)",
+       y="Sepal Width (cm)")
+m2<- ggplot(data=d, mapping= aes(x=Petal.Length, y= Petal.Width, color= Species, shape=Species))+ geom_point(size=3) + labs(title="Scatter plot of Petal Length vs Petal Width",
+       x="Petal Length (cm)",
+       y="Petal Width (cm)") 
+m2final<- m2 +scale_color_manual(values=wes_palette(n=3, name="Cavalcanti1")) + theme_gray(base_size = 15, base_family = "sans")
+print(m2final)
+
+m1 + m2
+
+#boxplots using iris data set
+m3 <- ggplot(data=d, aes(x=Species, y=Sepal.Length, fill=Species)) + geom_boxplot()+ labs(title="Sepal Length by Species")
+print(m3)
+m4<- m3 + aes(fill=Species) + scale_fill_manual(values= wes_palette("Cavalcanti1", 3, type="discrete")) + coord_flip()
+print(m4)
+m4final<-m4 + stat_summary(fun.y=mean, geom="point", shape=5, size=4) + theme_gray(base_size = 16, base_family = "sans") #plotting the mean within each boxplot and changing the theme to grey
+print(m4final)
+
+#bar graphs using iris data
+m5<-ggplot(data=d, mapping = aes(x= Sepal.Width, color=Species )) + geom_bar()
+print(m5) #not what i was hoping for
+ 
+set.seed(200)
+d2<- d[sample(1:nrow(d), 110),] #sampling all rows of data set for 110 values without replacementsamp
+head(d2)
+d2
+
+m6<-ggplot(data=d2, aes(x=Species, fill=Species)) + geom_bar() + labs(title="Barplot of Sepal Width",
+       y="Count") + ylim(0,50)
+m6final<- m6 + scale_fill_manual(values= wes_palette("Chevalier1", 6, type="continuous")) + theme_grey(base_size = 15, base_family = "sans") 
+print(m6final)
+
+
+library(reshape2)
+d3 <- melt(d, id.vars="Species") #melt function allows one to switch a column from the wide format to long format e.g. here its creating a column that contains the long format for sepal length & width, and petal length & width
+head(d3)
+
+m7 <- ggplot(data=d3, aes(x=Species, y=value, fill=variable)) + geom_bar(stat= "identity", position = "dodge") #stat tells R to group by the different measurements, and position= dodge tells R to place each measurement per species into a separate bar
+print(m7)
+m8<- m7 + labs(title= "Barplot of Flower Measurements", y= "Values (cm)", x= "Species") 
+m8 + theme_grey (base_size = 20, base_family = "sans")
+m8final<- m8 + scale_fill_manual(values= wes_palette("Chevalier1", 6, type="continuous"), name="Iris Measurements") + theme_gray(base_size = 15, base_family = "sans")
+print(m8final)
+#using the package patchwork to place 4 plots next to each other
+
+allPlots<-m8final + m6final + m2final + m4final
+
+
+
+#using facet function to facet graphs into one image
+
+m9<- ggplot(data=d3, mapping= aes(x=Species, y=value, col= Species)) + geom_point(size=3) + facet_grid(.~variable) + labs(title= "Flower Measurements", subtitle = "Sepal Length, Sepal Width, Petal Length, Petal Width Measurements among three Species", y="Value (cm)", x= "Species")
+print(m9)
+m9final<- m9 + scale_color_manual(values=wes_palette(n=3, name="Cavalcanti1")) + theme_gray(base_size = 15, base_family = "sans")
+
+ggsave(filename= "myplot", plot=allPlots, device = "pdf", path="C:/Users/ebuen/Desktop/BIO381/COMP BIOL/", scale = 1, dpi = 300, width = 15, height = 12, units= "in" ) #saving plots to pdf
+
+ggsave(filename= "facetplot", plot=m9final, device = "pdf", path="C:/Users/ebuen/Desktop/BIO381/COMP BIOL/", scale = 1, dpi = 300, width = 12, height = 10, units= "in" ) #saving plots to pdf
+
+
+
+```
+
