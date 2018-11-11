@@ -1,0 +1,152 @@
+---
+title: "Lab10"
+author: "Erika Bueno"
+date: "October 31, 2018"
+output: html_document
+---
+
+```{r}
+#1)Using a for loop, write a function to calculate the number of zeroes in a numeric vector. Before entering the loop, set up a counter variable counter <- 0. Inside the loop, add 1 to counter each time you have a zero in the matrix. Finally, use return(counter) for the output.
+z<- c(0,0,0,0,0,0,1)
+counts<-function(a=z){
+counter<-0 
+for (i in seq_along(a)) {
+   if (a[i]==0) counter<- 1 + counter
+   }
+return(counter)}
+
+counts()
+
+#2)Use subsetting instead of a loop to rewrite the function as a single line of code.
+zeros<- function(a=z){
+  subset<-length(a[a==0])
+return(subset)}
+
+zeros()
+
+#3)
+#Write a function that takes as input two integers representing the number of #rows and columns in a matrix. The output is a matrix of these dimensions in #which each element is the product of the row number x the column number.
+
+mat<- matrix(1:10, nrow=2, ncol = 5)
+func1<- function(x=mat){
+for (i in 1:nrow(x)) {
+  for (j in 1:ncol(x)){
+    newmatrix<- matrix(x[i,j] * i *j, ncol = 5, nrow=2)
+    return(newmatrix)
+    }}} 
+func1()
+mat
+
+
+func2<- function(numrow= 4, numcol=5){
+  mat2<- matrix(nrow=numrow, ncol=numcol)
+  for (i in 1:nrow(mat2)) {
+  for (j in 1:ncol(mat2)){
+        mat2[i,j]<- i * j
+  }}
+          return(mat2)
+}
+
+func2(2,5) 
+
+#4) Use the code from yesterday's class to design and conduct a randomization test #for some of your own data. You will need to modify the functions that read in #the data, calculate the metric, and randomize the data. Once those are set up, #the program should run correctly calling your new functions. Also, to make your #analysis fully repeatable, make sure you set the random number seed at the #beginning (use either set.seed() in base R, or char2seed in the TeachingDemos #package
+
+library(ggplot2)
+library(TeachingDemos)
+
+set.seed(1000)
+getwd()
+
+readData<- function(z=mydata){
+mydata<- read.csv("C:/Users/ebuen/Desktop/BIO381/COMP BIOL/CPBweights.csv", row.names =1, header=TRUE, sep = ",", stringsAsFactors = TRUE)
+        return(mydata)}
+mydata<-readData(mydata)
+print(mydata)
+
+##################################################
+# function: getMetric
+# calculate metric for randomization test
+# input: 3-column data set for ANOVA
+# output: Anova summary table
+#------------------------------------------------- 
+library(broom)
+getMetric<- function(z=mydata){
+  Tgroup<- as.factor(mydata$Treatment)
+.<- aov(FinalWeight~Tgroup, mydata)
+.<- tidy(.)
+.<- .$p.value
+return(.)
+}
+getMetric(mydata)
+p<-getMetric(mydata)
+p
+##################################################
+# function: shuffleData
+# randomize data for regression analysis
+# input: 3-column data frame (ID,xVar,yVar)
+# output: 3-column data frame (ID,xVar,yVar)
+#------------------------------------------------- 
+shuffledata<- function (mydata=FALSE){
+ mysim<- sample(mydata$FinalWeight)
+return(mysim)}
+
+shuffledata(mydata)
+shuffled<- shuffledata(mydata)
+shuffled
+##################################################
+# function: getPVal
+# calculate p value from simulation
+# input: list of observed metric, and vector of simulated metrics
+# output: lower, upper tail probability values
+#-------------------------------------------------
+getpval<- function(mydata=FALSE) {
+  sims<- list(p[1], xsim=runif(23))
+plower<-mean(shuffled[[2]]<=shuffled[[1]])
+pupper<- mean(shuffled[[2]]>=shuffled[[1]])
+return(c(plower,pupper))
+}
+
+getpval(mydata)
+################################################################
+# function: plotRanTest
+# create ggplot of histogram of simulated values
+# input: list of observed metric and vector of simulated metrics
+# output: saved ggplot graph
+#-------------------------------------------------------
+plotRanTest <- function(mydata=FALSE) {
+    sims=list(p[1], xsim=runif(23))
+  dat <-data.frame(ID=p[1], simx=sims[[2]])
+plot<-ggplot(data=dat,mapping =aes(x=simx))
+    plot + geom_histogram(mapping = aes(fill=I("goldenrod"),color=I("black"))) +
+    geom_vline(aes(xintercept=p[1],col="blue"))}
+plotRanTest(mydata)
+### Now use functions to do the work
+
+nSim<- 23
+xSim<- rep(NA, nSim)
+dF<- readData()
+xobs<-getMetric(dat)
+
+for (i in seq_len(nSim)) {
+  xSim[i]<- getMetric(shuffledata(dat))
+  }
+ 
+pvals<-list(xobs, xSim) ##not working 
+pvals
+getpval(pvals)
+plotRanTest(pvals)
+
+
+#5)For comparison, calculate in R the standard statistical analysis you would use with these data. How does the p-value compare for the standard test versus the p value you estimated from your randomization test? If the p values seem very different, run the program again with a different starting seed (and/or increase the number of replications in your randomization test). If there are persistent differences in the p value of the standard test versus your randomization, what do you think is responsible for this difference?
+
+Tgroup<- as.factor(mydata$Treatment) #setting my treatment groups as factors
+Anova<-aov(FinalWeight~Tgroup, mydata) #running the anova model against Final.Weight
+summary.aov(Anova) #summary stats of the model
+library(broom)
+tidy(Anova)$p.value #p-value = 0.483 which falls in between the upper and lower p-values generated by my randomization test [0.391 and 0.609]
+
+#after running the program with a different starting seed, I still get p-values> 0.05 suggesting that the non-significance of my observed metric is not due to chance alone. Running multiple randomization tests continued to generate high p-values.
+
+
+
+```
