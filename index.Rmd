@@ -1,7 +1,7 @@
 ---
-title: "My Homeworks"
+title: "My Computational Biology Homeworks"
 author: "Erika Bueno"
-date: "August 29, 2018"
+date: "August 29, 2018 to December 13, 2018"
 output: 
   html_document: 
     theme: lumen
@@ -23,12 +23,12 @@ output:
 
 [HW8](Lab8.html)
 
-[HW9](Lab9.html)
-
 [HW10](Lab10.html)
 
 [HW11](Lab11.html)
 
+
+[Links to useful R pacakges]
 
 
 

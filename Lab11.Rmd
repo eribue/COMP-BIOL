@@ -45,7 +45,7 @@ p
 
 
 p <- ggplot(beetles,mapping =  aes(x=Treatment, y=FinalWeight)) + 
-  geom_boxplot() +
+geom_boxplot(outlier.shape = NA) +
   labs(title="Beetle Weights (mg)",
        subtitle = "Final weights of beetles according to treatment group",
        x="Treatment",
@@ -53,12 +53,14 @@ p <- ggplot(beetles,mapping =  aes(x=Treatment, y=FinalWeight)) +
 
 p+ theme_gray(base_size = 20, base_family = "sans") #changing the fond and theme and filling each treatment by color
 
-p + coord_flip() +stat_summary(fun.y=mean, geom="point", shape=5, size=4)  #flipping x and y coordinates for better readability
+p + coord_flip() +stat_summary(fun.y=mean, geom="point", shape=5, size=4) + geom_point(position= position_jitter(width=0.2, height = 0.7), color= "grey")  #flipping x and y coordinates for better readability and adding jitter, but not enough points in the data so the jitter looks too spread out
 library(wesanderson) #list of palletes from wes anderson movies
 
-p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("IsleofDogs1", 6, type="continuous")) + coord_flip()
+p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("IsleofDogs1", 6, type="continuous")) + coord_flip() 
 p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("Chevalier1", 6, type="continuous")) + coord_flip() +stat_summary(fun.y=mean, geom="point", shape=5, size=4) 
 p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("Cavalcanti1", 6, type="continuous"))
+
+
 
 ######################################################################################################
 #ggplots using built in dataset iris
@@ -89,7 +91,7 @@ m4final<-m4 + stat_summary(fun.y=mean, geom="point", shape=5, size=4) + theme_gr
 print(m4final)
 
 #bar graphs using iris data
-m5<-ggplot(data=d, mapping = aes(x= Sepal.Width, color=Species )) + geom_bar()
+m5<-ggplot(data=d, mapping = aes(x= Sepal.Width, color=Species )) + geom_bar( size=1)
 print(m5) #not what i was hoping for
  
 set.seed(200)
@@ -97,17 +99,17 @@ d2<- d[sample(1:nrow(d), 110),] #sampling all rows of data set for 110 values wi
 head(d2)
 
 
-m6<-ggplot(data=d2, aes(x=Species, fill=Species)) + geom_bar() + labs(title="Barplot of Sepal Width",
-       y="Count") + ylim(0,50)
+m6<-ggplot(data=d2, aes(x=Species, fill=Species)) + geom_bar(color="black", size=1) + labs(title="Barplot of Petal Length",
+       y="Counts") + ylim(0,50)
 m6final<- m6 + scale_fill_manual(values= wes_palette("Chevalier1", 6, type="continuous")) + theme_grey(base_size = 15, base_family = "sans") 
 print(m6final)
 
 
-library(reshape2)
+library(reshape2) 
 d3 <- melt(d, id.vars="Species") #melt function allows one to switch a column from the wide format to long format e.g. here its creating a column that contains the long format for sepal length & width, and petal length & width
 head(d3)
 
-m7 <- ggplot(data=d3, aes(x=Species, y=value, fill=variable)) + geom_bar(stat= "identity", position = "dodge") #stat tells R to group by the different measurements, and position= dodge tells R to place each measurement per species into a separate bar
+m7 <- ggplot(data=d3, aes(x=Species, y=value, fill=variable)) + geom_bar(stat= "identity", position = "dodge", size=1) #stat tells R to group by the different measurements, and position= dodge tells R to place each measurement per species into a separate bar
 print(m7)
 m8<- m7 + labs(title= "Barplot of Flower Measurements", y= "Values (cm)", x= "Species") 
 m8 + theme_grey (base_size = 20, base_family = "sans")
@@ -123,8 +125,14 @@ print(allPlots)
 
 m9<- ggplot(data=d3, mapping= aes(x=Species, y=value, col= Species)) + geom_point(size=3) + facet_grid(.~variable) + labs(title= "Flower Measurements", subtitle = "Sepal Length, Sepal Width, Petal Length, Petal Width Measurements among three Species", y="Value (cm)", x= "Species")
 print(m9)
+
+```{r fig.width=15}
 m9final<- m9 + scale_color_manual(values=wes_palette(n=3, name="Cavalcanti1")) + theme_gray(base_size = 15, base_family = "sans")
+
 print(m9final)
+```
+
+#Saving graphs to pdf using ggsave
 ggsave(filename= "myplot", plot=allPlots, device = "pdf", path="C:/Users/ebuen/Desktop/BIO381/COMP BIOL/", scale = 1, dpi = 300, width = 15, height = 12, units= "in" ) #saving plots to pdf
 
 ggsave(filename= "facetplot", plot=m9final, device = "pdf", path="C:/Users/ebuen/Desktop/BIO381/COMP BIOL/", scale = 1, dpi = 300, width = 12, height = 10, units= "in" ) #saving plots to pdf
