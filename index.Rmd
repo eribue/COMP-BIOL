@@ -1,34 +1,48 @@
 ---
-title: "My Computational Biology Homeworks"
-author: "Erika Bueno"
+title: "Computational Biology Assingments"
+author: "Erika Bueno, PhD Student"
 date: "August 29, 2018 to December 13, 2018"
 output: 
   html_document: 
     theme: lumen
+
 ---
+<img src="me.jpg" WIDTH=250 HEIGHT=250>
 
-[HW1](https://eribue.github.io/COMP-BIOL/) 
+###Assingments
+####[1: Setting up a webpage](https://eribue.github.io/COMP-BIOL/) 
 
-[HW2](Lab2.html)
+####[2: Typora Diagrams](Lab2.html)
 
-[HW3](Lab3.pdf)
+####[3: Beamer Presentations](Lab3.pdf)
 
-[HW4](Lab4.html)
+####[4: Vectors in R and Regular Expressions](Lab4.html)
 
-[HW5](Lab5.html)
+####[5: Manipulating Data using dplyr](Lab5.html)
 
-[HW6](Lab6.html)
+####[6: Data distributions](Lab6.html)
 
-[HW7](Lab7.html)
+####[7: Creating Fake Datasets to Explore Hypotheses](Lab7.html)
 
-[HW8](Lab8.html)
+####[8: Organizing Code with Structured Programming](Lab8.html)
 
-[HW10](Lab10.html)
+####[10: For Loops and Randomization Tests](Lab10.html)
 
-[HW11](Lab11.html)
+####[11: Advanced ggplotting](Lab11.html)
+
+###Presentations
+
+####[Sushi R Package for visualizing genomic data](SushiPackage.html)
 
 
-[Links to useful R pacakges]
+###Links to useful R pacakges and data anaylsis
+
+####[File Format Info](https://genome.ucsc.edu/FAQ/FAQformat.html)
+####[Genome Browser Info](http://homer.ucsd.edu/homer/basicTutorial/genomeBrowsers.html)
+
+###[Follow my dog, Rooby, on instagram:](https://www.instagram.com/rooby_the_spicymeatball/)
+<img src="spicy.jpg" WIDTH=250 HEIGHT=250>
+
 
 
 
