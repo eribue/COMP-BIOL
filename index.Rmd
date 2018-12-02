@@ -32,7 +32,7 @@ output:
 
 ###Presentations
 
-####[Sushi R Package for visualizing genomic data](Sushi.html)
+####[Sushi R Package for visualizing genomic data](SushiPresentation.html)
 
 
 ###Links to useful R pacakges and data anaylsis
