@@ -32,7 +32,7 @@ output:
 
 ###Presentations
 
-####[Sushi R Package for visualizing genomic data](SushiPackage.html)
+####[Sushi R Package for visualizing genomic data](Sushi.html)
 
 
 ###Links to useful R pacakges and data anaylsis
@@ -42,6 +42,7 @@ output:
 
 ###[Follow my dog, Rooby, on instagram:](https://www.instagram.com/rooby_the_spicymeatball/)
 <img src="spicy.jpg" WIDTH=250 HEIGHT=250>
+
 
 
 

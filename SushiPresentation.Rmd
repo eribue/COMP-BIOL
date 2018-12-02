@@ -1,0 +1,209 @@
+---
+title: "SushiPresentation"
+author: "Erika Bueno"
+date: "December 1, 2018"
+output: html_document
+theme: journal
+---
+
+```{r}
+
+#---------------------------INSTALLING SUSHI FROM BIOCONDUCTOR-----------------------
+#Loading the package, sushi
+#Use the BiocManager package to install and manage packages from the Bioconductor project for the statistical analysis and comprehension of high-throughput genomic data.
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("Sushi", version = "3.8")
+
+#optional installing via devtools 
+library("devtools")
+install_github("dphansti/Sushi")
+```
+
+```{r}
+
+library(Sushi) #loading sushi
+
+##what is sushi? Sushi is an R package for visualizing genomic data
+
+##What formats does it use? BED, BEDGRAPH, BEDPE, interaction matrix 
+
+##what type of plots does it make? sequencing tracks, various chromatin interactions plots from HiC data, manhattan plots for GWAS, transcript structures from RNA SEQ data, gene structures, and gene density plots
+
+##What other features does it have? allows you to define regions of plots to highlight and zoom into in subsequent graphs for a more detailed/more resolution visualization. Uses the layout function to create multipaneled plots for publications
+
+#Let's look at the available datasets in Sushi
+
+Sushi_data = data(package = 'Sushi') #access the datasets with function data
+Sushi_data
+data(list = Sushi_data$results[,3]) 
+Sushi_data$results[,3] #viewing the datasets available
+
+```
+
+```{r}
+#------------------------------------FUNCTIONS--------------------------------------
+#plotBedgraph() plots signal tracks using bedgraph files
+head(Sushi_DNaseI.bedgraph) #exploring the dataset
+tail(Sushi_DNaseI.bedgraph)
+# plotBedgraph requirments: bedgraph data, chromosome ID, chromosome start, chromosome end, and a value that represents coverage depth 
+
+
+chrom = "chr11" #chromosome name
+chromstart = 1650000 #chromosome position
+chromend = 2350000
+
+plotBedgraph(Sushi_DNaseI.bedgraph,chrom,chromstart,chromend,colorbycol= SushiColors(5)) 
+#colorbycol() places a heatmap of 5 colors along the lines
+
+labelgenome(chrom,chromstart,chromend,n=5,scale="Mb") #labelgenome() annotates the plot; n= no. of tick marks, scale= megabases
+
+mtext("Read Depth",side=2,line=2.75,cex=1,font=2) #adding text to the y-axis
+axis(side=2,las=2,tcl=.2) #tcl: tick mark length & direction; las:label orientation
+#?mtext
+#?axis
+
+```
+
+```{r}
+#-------------------------------ZOOM AND MULTIPANELING-----------------------------------
+#FUNCTIONS: multipaneling with layout(base) and zoom(sushi)
+#create a layout for multiple plots
+p<-layout(matrix(c(1,1,1,1,
+                   1,1,1,1,
+                   2,2,2,2,
+                   2,2,2,2,
+                   3,3,3,3,
+                   3,3,3,3
+                   ),
+                 6,4,byrow=TRUE))
+layout.show(p)
+par(mgp=c ( 3,.3,0 )) #setting the margin line thickness for axis labels, title, and axis line
+
+##FUNCTIONS: Plot Manhattan Plot using plotManhattan()
+#set the margins 
+par(mar=c(3,4,3,2)) # here we are setting the number of lines of margins on four sides of the plot (bottom, left, top, right)
+
+#set the genomic regions 
+
+chrom2= "chr15"
+chromstart2= 73000000
+chromend2= 89500000
+
+#make manhattan plot
+plotManhattan(bedfile = Sushi_GWAS.bed, pvalues = Sushi_GWAS.bed[,5], genome = Sushi_hg18_genome, cex=0.75)
+
+#zoom into a regions using zoomregion()
+
+zoomsregion(region=c(chromstart2, chromend2), chrom = chrom2, genome=Sushi_hg18_genome,extend = c(0.07,0.2), wideextend = 0.2, offsets = c(0, 0))
+#?zoomsregion
+#add labels
+labelgenome(genome=Sushi_hg18_genome, n=4, scale = "Mb", edgeblankfraction = 0.20)
+#?labelgenome
+#add y-axis
+axis(side=2, las=2, tcl=.2)
+mtext("log10(P)", side=2, line=1.75, cex= .75, font=2)
+
+#addplot label
+
+labelplot("A)"," GWAS")
+
+
+##Zoomed in manhattan plot
+
+par(mar=c(0.1, 4,2,2))
+
+#set genomic regions
+chrom= "chr15"
+chromstart= 60000000
+chromend= 80000000
+chromstart2= 72000000
+chromend2= 74000000
+
+#make manhattan plot
+plotManhattan(bedfile = Sushi_GWAS.bed, chrom=chrom2, 
+              chromstart = chromstart, 
+              chromend = chromend,
+              pvalues =Sushi_GWAS.bed$pval.GC.DBP,
+              col= SushiColors(6) (nrow(Sushi_hg18_genome))[15],
+              cex=0.75)
+
+
+#add another zoom in, creates an outline around the region you want to zoom into
+zoomsregion(region=c(chromstart2, chromend2),
+chrom=chrom2,
+genome=NULL,
+extend = c(0.075,1), 
+wideextend = 0.2,
+offsets = c(0.0,0))
+
+#add a zoom box
+
+zoombox(passthrough=TRUE, topextend = 2)
+#?zoombox
+
+#add y-axis
+axis(side=2, las=2, tcl=.2)
+mtext("Z-score", side=2, line = 1.75, cex = .75, font = 2)
+
+
+#add plot labels
+labelplot("B)"," Zoomed in GWAS")
+
+
+##FUNCTIONS: plotBed() for gene density heat maps
+#plotBed() can also plot gene density heat maps along a chromosome but first we need to load in dataset of genes from ensembl 
+par(mar=c(3,4,1.8,2)) #set the margins
+
+#set genomic regions
+chrom = "chr15"
+chromstart = 60000000
+chromend = 80000000
+chrom_biomart = gsub("chr","",chrom) #the biomart package is built into sushi. It allows you to pull genomic information from the ensmbl website. The gsub() allows you to replace character strings in a dataset
+
+#set the mart
+mart<-useMart(host='may2009.archive.ensembl.org',  #host to connect to
+             biomart='ENSEMBL_MART_ENSEMBL', #database to connect to
+             dataset='hsapiens_gene_ensembl') #dataset to use
+
+#get gene info
+#getBM: retrieves user defined attributes from the Biomart database.
+geneinfobed<-getBM(attributes =c("chromosome_name","start_position","end_position"), 
+             filters= c("chromosome_name","start","end"),
+             values=list(chrom_biomart,chromstart,chromend),mart=mart)
+
+
+#add "chr" to the chrom column
+geneinfobed[,1] = paste("chr",geneinfobed[,1],sep="")
+
+head (geneinfobed)
+#plot gene density 
+plotBed(beddata = geneinfobed[!duplicated(geneinfobed),],
+        chrom = chrom,
+        chromstart = chromstart,
+        chromend =chromend,
+        row='supplied', #how row number should be determined
+        palettes = list(SushiColors(7)), type = "density") #type can also be set to circles and region but here we want a density plot 
+#?plotBed
+
+# add zoom in
+zoomsregion(region=c(chromstart2,chromend2), 
+            chrom=chrom2,
+            genome=NULL,
+            highlight = TRUE, #TRUE indicates that you just want a box around a region of interest
+            extend=c(2,0)) #vector indidcating how far zoom region extends above and below the plot region
+#add labels
+labelgenome(chrom, 
+            chromstart, 
+            chromend, 
+            n=3,
+            scale="Mb",edgeblankfraction=0.20)
+
+
+labelplot("C)"," Gene Density")
+
+
+
+```
+
+
