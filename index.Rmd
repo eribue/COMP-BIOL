@@ -34,6 +34,8 @@ output:
 
 ####[Sushi R Package for visualizing genomic data](SushiPresentation.html)
 
+####[Paper describing Sushi: Phasientel et al. 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4173017/)
+
 
 ###Links to useful R pacakges and data anaylsis
 

@@ -1,5 +1,5 @@
 ---
-title: "Lab11"
+title: "Lab 11"
 author: "Erika Bueno"
 date: "November 7, 2018"
 output: html_document
@@ -51,7 +51,10 @@ geom_boxplot(outlier.shape = NA) +
        x="Treatment",
        y="Mass (mg)")
 
-p+ theme_gray(base_size = 20, base_family = "sans") #changing the fond and theme and filling each treatment by color
+```
+```{r fig.width=10, fig.height=5}
+
+p+ theme_gray(base_size =15, base_family = "sans") #changing the font and theme and filling each treatment by color
 
 p + coord_flip() +stat_summary(fun.y=mean, geom="point", shape=5, size=4) + geom_point(position= position_jitter(width=0.2, height = 0.7), color= "grey")  #flipping x and y coordinates for better readability and adding jitter, but not enough points in the data so the jitter looks too spread out
 library(wesanderson) #list of palletes from wes anderson movies
@@ -59,8 +62,9 @@ library(wesanderson) #list of palletes from wes anderson movies
 p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("IsleofDogs1", 6, type="continuous")) + coord_flip() 
 p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("Chevalier1", 6, type="continuous")) + coord_flip() +stat_summary(fun.y=mean, geom="point", shape=5, size=4) 
 p+ aes(fill=Treatment) + scale_fill_manual(values= wes_palette("Cavalcanti1", 6, type="continuous"))
+```
 
-
+```{r}
 
 ######################################################################################################
 #ggplots using built in dataset iris
@@ -115,29 +119,32 @@ m8<- m7 + labs(title= "Barplot of Flower Measurements", y= "Values (cm)", x= "Sp
 m8 + theme_grey (base_size = 20, base_family = "sans")
 m8final<- m8 + scale_fill_manual(values= wes_palette("Chevalier1", 6, type="continuous"), name="Iris Measurements") + theme_gray(base_size = 15, base_family = "sans")
 print(m8final)
+```
+
+```{r fig.width=15, fig.height=10}
 #using the package patchwork to place 4 plots next to each other
 
 allPlots<-m8final + m6final + m2final + m4final
 print(allPlots)
 
-
+```
+```{r fig.width=15, fig.height=10}
 #using facet function to facet graphs into one image
 
 m9<- ggplot(data=d3, mapping= aes(x=Species, y=value, col= Species)) + geom_point(size=3) + facet_grid(.~variable) + labs(title= "Flower Measurements", subtitle = "Sepal Length, Sepal Width, Petal Length, Petal Width Measurements among three Species", y="Value (cm)", x= "Species")
 print(m9)
+```
 
-```{r fig.width=15}
+```{r fig.width=15, fig.height=10}
 m9final<- m9 + scale_color_manual(values=wes_palette(n=3, name="Cavalcanti1")) + theme_gray(base_size = 15, base_family = "sans")
 
 print(m9final)
 ```
 
+```{r}
 #Saving graphs to pdf using ggsave
 ggsave(filename= "myplot", plot=allPlots, device = "pdf", path="C:/Users/ebuen/Desktop/BIO381/COMP BIOL/", scale = 1, dpi = 300, width = 15, height = 12, units= "in" ) #saving plots to pdf
 
 ggsave(filename= "facetplot", plot=m9final, device = "pdf", path="C:/Users/ebuen/Desktop/BIO381/COMP BIOL/", scale = 1, dpi = 300, width = 12, height = 10, units= "in" ) #saving plots to pdf
-
-
-
 ```
 
