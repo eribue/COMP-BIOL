@@ -37,7 +37,11 @@ output:
 ####[Paper describing Sushi: Phasientel et al. 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4173017/)
 
 
-###Links to useful R pacakges and data anaylsis
+###Links to useful sites
+
+####[How to use PaletteR to make custom palettes](https://datascienceplus.com/how-to-use-paletter-to-automagically-build-palettes-from-pictures/)
+
+####[ggplot2: Plotting tutorial](https://www.mailman.columbia.edu/sites/default/files/media/fdawg_ggplot2.html)
 
 ####[File Format Info](https://genome.ucsc.edu/FAQ/FAQformat.html)
 ####[Genome Browser Info](http://homer.ucsd.edu/homer/basicTutorial/genomeBrowsers.html)
